@@ -20,32 +20,25 @@ class Server:
 
     def handle_client(self, client_sock):
         try:
-            # Recebe os dados do cliente
-            data = client_sock.recv(4096)
+            
+            data = client_sock.recv(4096) #recebe os dados do cliente
             if not data:
                 print("Nenhum dado recebido")
                 return
 
-            # Desserializa os dados
-            try:
+            
+            try: # pickle
                 client_data = pickle.loads(data)
             except pickle.PickleError as e:
                 print(f"Erro ao dados do cliente: {e}")
                 client_sock.send(pickle.dumps("Dados inválidos"))
                 return
 
-            # Verifica se os dados contêm as chaves esperadas
-            if not all(key in client_data for key in ['id', 'cpu', 'ram', 'disk']):
-                print(f"Dados incompletos ou inválidos recebidos de {client_data.get('id', 'Desconhecido')}")
-                client_sock.send(pickle.dumps("Dados incompletos ou inválidos."))
-                return
-
-            # Armazena os dados do cliente
-            self.clients[client_data['id']] = client_data
+            e
+            self.clients[client_data['id']] = client_data #aq q armazena os dados do cliente
             print(f"Dados recebidos de {client_data['id']}: {client_data}")
 
-            # Envia uma confirmação de volta ao cliente
-            client_sock.send(pickle.dumps("Dados recebidos com sucesso!"))
+            client_sock.send(pickle.dumps("Dados recebidos com sucesso!")) #confirma que recebeu 
         except Exception as e:
             print(f"Erro ao processar dados do cliente: {e}")
         finally:
